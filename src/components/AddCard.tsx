@@ -39,18 +39,24 @@ const ButtonContainer = styled.button`
 
 const Form = styled.form`
   width: 100%;
-  height: 3.5rem;
+  padding: 1rem 0.5rem;
+  gap:0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
 `;
 
 const FormInput = styled.input`
-  width: 100%;
-  background-color: black;
+width:100%;
+ height: 5rem;;
+ border-radius: 12px;
+ 
+  background-color: #1f2937;
   border-color: transparent;
-  height: 100%;
-  padding-left: 8px;
+   padding-left: 8px;
   color: #fff;
-  padding: 1rem;
-  text-transform: capitalize;
+   text-transform: capitalize;
   &:focus {
     border: 3px solid;
     border-color: #7ca3f8;
@@ -66,12 +72,12 @@ const FormButton = styled.section`
   justify-content: flex-start;
   background-color: #0d1117;
   border-radius: 12px;
-  width: 18rem;
+   
   min-height: 3rem;
-  gap: 0.5rem;
+  gap: 0.75rem;
   color: #fff;
   text-transform: capitalize;
-  padding: 1rem;
+ 
 `;
 
 const AddButton = styled.button`

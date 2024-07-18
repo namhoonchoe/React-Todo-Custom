@@ -7,25 +7,6 @@ import { categoryState } from "../atoms";
 import DismissIcon from "./Icons/DismissIcon";
 import { useState } from "react";
 
-const Form = styled.form`
-  width: 100%;
-  height: 3.5rem;
-`;
-
-const FormInput = styled.input`
-  width: 100%;
-  background-color: black;
-  border-color: transparent;
-  height: 100%;
-  padding-left: 8px;
-  color: #fff;
-  &:focus {
-    border: 3px solid;
-    border-color: #7ca3f8;
-    outline: none;
-  }
-`;
-
 const AddLayout = styled.section`
   display: flex;
   flex-shrink: 0;
@@ -37,6 +18,32 @@ const AddLayout = styled.section`
   overflow: hidden;
   width: 18rem;
   min-height: 9rem;
+  padding: 1rem 0.5rem;
+  background-color: black;
+`;
+
+const Form = styled.form`
+  width: 100%;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+`;
+
+const FormInput = styled.input`
+  width: 100%;
+  height: 3.5rem;
+  background-color: #1f2937;
+  border-color: transparent;
+  border-radius: 12px;
+  padding-left: 8px;
+  color: #fff;
+  &:focus {
+    border: 2px;
+    border-color: #7ca3f8;
+    outline: none;
+  }
 `;
 
 const AddCategory = styled.section`
@@ -45,17 +52,16 @@ const AddCategory = styled.section`
   flex-grow: 0;
   align-items: center;
   justify-content: flex-start;
-  padding: 1rem;
   background-color: #0d1117;
   border-radius: 12px;
-  width: 18rem;
+  width: 100%;
+  max-width: 18rem;
   min-height: 3rem;
   gap: 0.5rem;
+  padding-left: 1rem;
+
   color: #fff;
   text-transform: capitalize;
-  &:hover {
-    background-color: #464646;
-  }
 `;
 
 const ButtonContainer = styled.button`
@@ -65,6 +71,9 @@ const ButtonContainer = styled.button`
   background-color: transparent;
   width: 1.5rem;
   height: 1.5rem;
+  &:hover {
+    background-color: #464646;
+  }
 `;
 
 const AddButton = styled.button`
@@ -75,7 +84,14 @@ const AddButton = styled.button`
   border-radius: 8px;
   background-color: #579dff;
   color: #fff;
+  &:hover {
+    background-color: #1e22f5;
+  }
 `;
+
+const FormButton = styled(AddCategory)`
+  padding-left: 0;
+`
 
 const AddMessage = styled.p`
   font-size: 12px;
@@ -113,12 +129,12 @@ export default function AddList() {
                 required: "Please write a board name",
               })}
             />
-            <AddCategory style={{ borderRadius: "0 0 12px 12px" }}>
+            <FormButton>
               <AddButton type="submit">add list</AddButton>
               <ButtonContainer onClick={() => setIsAdding(!isAdding)}>
                 <DismissIcon />
               </ButtonContainer>
-            </AddCategory>
+            </FormButton>
           </Form>
         </AddLayout>
       ) : (

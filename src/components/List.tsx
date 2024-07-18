@@ -26,6 +26,9 @@ const ListHeader = styled.header`
   color: #fff;
   display: flex;
   padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 `;
 
 const ListTitle = styled.p`
@@ -37,11 +40,11 @@ const ListTitle = styled.p`
 const ListMain = styled.main`
   display: flex;
   width: 100%;
-  padding:0 0.5rem;
+  padding: 0 0.5rem;
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  gap: 0.5rem;
+  gap: 1rem;
 `;
 
 type ListProps = {
