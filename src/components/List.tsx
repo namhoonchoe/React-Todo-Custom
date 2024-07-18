@@ -1,6 +1,8 @@
-import React from "react";
 import { styled } from "styled-components";
-import AddIcon from "./Icons/AddIcon";
+import { useRecoilValue } from "recoil";
+import { taskState } from "../atoms";
+import AddCard from "./AddCard";
+import Card from "./Card";
 
 const ListLayout = styled.section`
   display: flex;
@@ -32,35 +34,14 @@ const ListTitle = styled.p`
   font-weight: 600;
 `;
 
-const TaskMessage = styled(ListTitle)`
-  font-size: 12px;
-`;
-
-const AddTask = styled.section`
+const ListMain = styled.main`
   display: flex;
-  flex-shrink: 0;
-  flex-grow: 0;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 1rem;
-  background-color: #0d1117;
-  border-radius: 12px;
   width: 100%;
-  min-height: 3rem;
+  padding:0 0.5rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
   gap: 0.5rem;
-  color: #fff;
-  text-transform: capitalize;
-  position: absolute;
-  bottom: 0;
-`;
-
-const ButtonContainer = styled.button`
-  outline: #fff;
-  border-radius: 0.5rem;
-  border-color: transparent;
-  background-color: transparent;
-  width: 1.5rem;
-  height: 1.5rem;
 `;
 
 type ListProps = {
@@ -69,18 +50,23 @@ type ListProps = {
 };
 
 export default function List({ categoryName, categoryId }: ListProps) {
+  const tasks = useRecoilValue(taskState);
+  const filteredTasks = tasks.filter(
+    (task) => task.taskCategory.categoryId === categoryId
+  );
+
   return (
     <ListLayout>
       <ListHeader>
         <ListTitle>{categoryName}</ListTitle>
       </ListHeader>
-      <AddTask>
-        <ButtonContainer>
-          <AddIcon />
-        </ButtonContainer>
+      <ListMain>
+        {filteredTasks.map((task) => (
+          <Card key={task.taskId} task={task.task} taskId={task.taskId} />
+        ))}
+      </ListMain>
 
-        <TaskMessage>add a card</TaskMessage>
-      </AddTask>
+      <AddCard categoryName={categoryName} categoryId={categoryId} />
     </ListLayout>
   );
 }

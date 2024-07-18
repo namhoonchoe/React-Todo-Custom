@@ -81,7 +81,7 @@ function App() {
         </Header>
         <BoardsLayout>
           {categories.map((category) => (
-            <List categoryName={category.categoryName} />
+            <List categoryName={category.categoryName} categoryId={category.categoryId} />
           ))}
           <AddList />
         </BoardsLayout>
