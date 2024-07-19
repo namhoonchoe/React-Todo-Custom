@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import styled from "styled-components";
 import EditIcon from "./Icons/EditIcon";
+import DismissIcon from "./Icons/DismissIcon";
+import { useForm } from "react-hook-form";
 
 const ButtonContainer = styled.button`
   outline: #fff;
@@ -9,6 +11,9 @@ const ButtonContainer = styled.button`
   background-color: transparent;
   width: 1.5rem;
   height: 1.5rem;
+`;
+
+const EditButtonContainer = styled(ButtonContainer)`
   opacity: 0;
 `;
 
@@ -26,7 +31,7 @@ const TaskContainer = styled.section`
   color: #fff;
   text-transform: capitalize;
   padding: 1rem;
-   &:hover {
+  &:hover {
     border: solid;
     border-color: #7ca3f8;
   }
@@ -34,7 +39,7 @@ const TaskContainer = styled.section`
   /**
   styled components group hover
   */
-  &:hover ${ButtonContainer} {
+  &:hover ${EditButtonContainer} {
     opacity: 1;
   }
 `;
@@ -45,43 +50,148 @@ const TaskTitle = styled.p`
   font-weight: 600;
 `;
 
-const ModalContainer = styled.dialog<{
-  positionX: number | undefined;
-  positionY: number | undefined;
-}>`
+const ModalWrapper = styled.dialog`
   width: 18rem;
-  margin: 0;
+  margin: auto;
+  border: 0;
+  padding: 0;
+  border-radius: 12px;
+  aspect-ratio: 1.5;
+  position: relative;
+  overflow: hidden;
+  background-color: #000;
+`;
+
+const ModalContent = styled.div`
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
   position: absolute;
-  transform: ${(props) =>
-    `translate(${props ? props.positionX : 0}px, ${
-      props ? props.positionY : 0
-    }px)`};
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+`;
+
+const ModalHeader = styled.header`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 3rem;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const AddButton = styled.button`
+  font-size: 12px;
+  text-transform: capitalize;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background-color: #579dff;
+  color: #fff;
+  &:hover {
+    background-color: #1e22f5;
+  }
+`;
+
+const ModalMain = styled.main`
+  width: 100%;
+`;
+
+const Form = styled.form`
+  width: 100%;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+`;
+
+const FormInput = styled.input`
+  width: 100%;
+  height: 3.5rem;
+  background-color: #1f2937;
+  border-color: transparent;
+  border-radius: 12px;
+  padding-left: 8px;
+  color: #fff;
+  &:focus {
+    border: 2px;
+    border-color: #7ca3f8;
+    outline: none;
+  }
+`;
+
+const FormButton = styled.section`
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 0;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 18rem;
+  min-height: 3rem;
+  gap: 0.5rem;
+  padding-left: 0;
+
+  color: #fff;
+  text-transform: capitalize;
+`;
+
+const ModalMessage = styled.p`
+  color: #fff;
+  font-size: 16px;
+  text-transform: capitalize;
+  font-weight: 600;
 `;
 
 type CardProps = {
   task: string;
   taskId: string;
+  categoryName: string;
 };
 
-export default function Card({ task, taskId }: CardProps) {
+export default function Card({ task, taskId, categoryName }: CardProps) {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-  const containerRef = useRef<HTMLSelectElement | null>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const { register, handleSubmit, setValue } = useForm();
+
   return (
     <>
-      <TaskContainer ref={containerRef}>
-        <TaskTitle>{task}</TaskTitle>
-        <ButtonContainer onClick={() => dialogRef.current?.showModal()}>
+      <TaskContainer ref={containerRef} id="container">
+        <TaskTitle>{task} </TaskTitle>
+        <EditButtonContainer onClick={() => dialogRef.current?.showModal()}>
           <EditIcon />
-        </ButtonContainer>
-     
+        </EditButtonContainer>
       </TaskContainer>
-      <ModalContainer
-          ref={dialogRef}
-          positionX={containerRef.current?.getBoundingClientRect().left}
-          positionY={containerRef.current?.getBoundingClientRect().top}
-        >
-          <p>modal</p>
-        </ModalContainer>
+      <ModalWrapper ref={dialogRef}>
+        <ModalContent>
+          <ModalHeader>
+            <ModalMessage>
+              {task} in {categoryName}
+            </ModalMessage>
+          </ModalHeader>
+          <ModalMain>
+            <Form>
+              <FormInput
+                placeholder={task}
+                {...register("categoryName", {
+                  required: "Please write a board name",
+                })}
+              />
+              <FormButton>
+                <AddButton type="submit">Edit task</AddButton>
+                <ButtonContainer onClick={() => dialogRef.current?.close}>
+                  <DismissIcon />
+                </ButtonContainer>
+              </FormButton>
+            </Form>
+          </ModalMain>
+        </ModalContent>
+      </ModalWrapper>
     </>
   );
 }

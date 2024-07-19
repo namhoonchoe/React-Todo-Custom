@@ -65,7 +65,7 @@ export default function List({ categoryName, categoryId }: ListProps) {
       </ListHeader>
       <ListMain>
         {filteredTasks.map((task) => (
-          <Card key={task.taskId} task={task.task} taskId={task.taskId} />
+          <Card key={task.taskId} task={task.task} taskId={task.taskId} categoryName={categoryName} />
         ))}
       </ListMain>
 
