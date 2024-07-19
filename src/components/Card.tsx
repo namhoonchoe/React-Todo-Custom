@@ -1,7 +1,6 @@
-import React from "react";
+import { useRef } from "react";
 import styled from "styled-components";
 import EditIcon from "./Icons/EditIcon";
-
 
 const ButtonContainer = styled.button`
   outline: #fff;
@@ -11,7 +10,6 @@ const ButtonContainer = styled.button`
   width: 1.5rem;
   height: 1.5rem;
   opacity: 0;
-  
 `;
 
 const TaskContainer = styled.section`
@@ -28,8 +26,7 @@ const TaskContainer = styled.section`
   color: #fff;
   text-transform: capitalize;
   padding: 1rem;
-  
-  &:hover {
+   &:hover {
     border: solid;
     border-color: #7ca3f8;
   }
@@ -48,6 +45,18 @@ const TaskTitle = styled.p`
   font-weight: 600;
 `;
 
+const ModalContainer = styled.dialog<{
+  positionX: number | undefined;
+  positionY: number | undefined;
+}>`
+  width: 18rem;
+  margin: 0;
+  position: absolute;
+  transform: ${(props) =>
+    `translate(${props ? props.positionX : 0}px, ${
+      props ? props.positionY : 0
+    }px)`};
+`;
 
 type CardProps = {
   task: string;
@@ -55,12 +64,24 @@ type CardProps = {
 };
 
 export default function Card({ task, taskId }: CardProps) {
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const containerRef = useRef<HTMLSelectElement | null>(null);
   return (
-    <TaskContainer>
-      <TaskTitle>{task}</TaskTitle>
-      <ButtonContainer>
-        <EditIcon />
-      </ButtonContainer>
-    </TaskContainer>
+    <>
+      <TaskContainer ref={containerRef}>
+        <TaskTitle>{task}</TaskTitle>
+        <ButtonContainer onClick={() => dialogRef.current?.showModal()}>
+          <EditIcon />
+        </ButtonContainer>
+     
+      </TaskContainer>
+      <ModalContainer
+          ref={dialogRef}
+          positionX={containerRef.current?.getBoundingClientRect().left}
+          positionY={containerRef.current?.getBoundingClientRect().top}
+        >
+          <p>modal</p>
+        </ModalContainer>
+    </>
   );
 }
