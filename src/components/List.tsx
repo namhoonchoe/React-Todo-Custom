@@ -2,19 +2,10 @@ import { styled } from "styled-components";
 import { useRecoilValue } from "recoil";
 import { taskState } from "../atoms";
 import AddCard from "./AddCard";
-import MoreIcon from "./Icons/MoreIcon";
 import Card from "./Card";
+ import DropDown from "./DropDown";
 
-
-const ButtonContainer = styled.button`
-  outline: #fff;
-  border-radius: 0.5rem;
-  border-color: transparent;
-  background-color: transparent;
-  width: 1.5rem;
-  height: 1.5rem;
-  opacity: 0;
-`;
+ 
 
 const ListLayout = styled.section`
   display: flex;
@@ -41,9 +32,7 @@ const ListHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  &:hover ${ButtonContainer} {
-    opacity: 1;
-  }
+  
 `;
 
 const ListTitle = styled.p`
@@ -62,7 +51,6 @@ const ListMain = styled.main`
   gap: 1rem;
 `;
 
-
 type ListProps = {
   categoryName: string;
   categoryId: string;
@@ -78,13 +66,17 @@ export default function List({ categoryName, categoryId }: ListProps) {
     <ListLayout>
       <ListHeader>
         <ListTitle>{categoryName}</ListTitle>
-        <ButtonContainer>
-          <MoreIcon />
-        </ButtonContainer>
+        <DropDown/>
+ 
       </ListHeader>
       <ListMain>
         {filteredTasks.map((task) => (
-          <Card key={task.taskId} task={task.task} taskId={task.taskId} categoryName={categoryName} />
+          <Card
+            key={task.taskId}
+            task={task.task}
+            taskId={task.taskId}
+            categoryName={categoryName}
+          />
         ))}
       </ListMain>
 
