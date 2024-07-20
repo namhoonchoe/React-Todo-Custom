@@ -3,6 +3,7 @@ import styled from "styled-components";
 import EditIcon from "./Icons/EditIcon";
 import DismissIcon from "./Icons/DismissIcon";
 import { useForm } from "react-hook-form";
+import DeleteIcon from "./Icons/DeleteIcon";
 
 const ButtonContainer = styled.button`
   outline: #fff;
@@ -31,6 +32,9 @@ const TaskContainer = styled.section`
   color: #fff;
   text-transform: capitalize;
   padding: 1rem;
+`;
+
+const TaskCardAnimated = styled(TaskContainer)`
   &:hover {
     border: solid;
     border-color: #7ca3f8;
@@ -67,6 +71,7 @@ const ModalContent = styled.div`
   justify-content: start;
   flex-direction: column;
   position: absolute;
+  gap: 0.5rem;
   top: 0;
   left: 0;
   width: 100%;
@@ -83,7 +88,7 @@ const ModalHeader = styled.header`
   align-items: center;
 `;
 
-const AddButton = styled.button`
+const EditButton = styled.button`
   font-size: 12px;
   text-transform: capitalize;
   font-weight: 600;
@@ -93,6 +98,14 @@ const AddButton = styled.button`
   color: #fff;
   &:hover {
     background-color: #1e22f5;
+  }
+`;
+
+const DeleteButton = styled(EditButton)`
+ background-color: #f74242;
+  color: #fff;
+  &:hover {
+    background-color: #f51e1e;
   }
 `;
 
@@ -155,19 +168,32 @@ type CardProps = {
 };
 
 export default function Card({ task, taskId, categoryName }: CardProps) {
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const editDialogRef = useRef<HTMLDialogElement | null>(null);
+  const deleteDialogRef = useRef<HTMLDialogElement | null>(null);
   const containerRef = useRef<HTMLElement>(null);
   const { register, handleSubmit, setValue } = useForm();
 
   return (
     <>
-      <TaskContainer ref={containerRef} id="container">
+      <TaskCardAnimated ref={containerRef} id="container">
         <TaskTitle>{task} </TaskTitle>
-        <EditButtonContainer onClick={() => dialogRef.current?.showModal()}>
-          <EditIcon />
-        </EditButtonContainer>
-      </TaskContainer>
-      <ModalWrapper ref={dialogRef}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <EditButtonContainer
+            onClick={() => editDialogRef.current?.showModal()}
+          >
+            <EditIcon />
+          </EditButtonContainer>
+          <EditButtonContainer
+            onClick={() => deleteDialogRef.current?.showModal()}
+          >
+            <DeleteIcon />
+          </EditButtonContainer>
+        </div>
+      </TaskCardAnimated>
+      {/**
+       * Edit Dialog
+       */}
+      <ModalWrapper ref={editDialogRef}>
         <ModalContent>
           <ModalHeader>
             <ModalMessage>
@@ -183,12 +209,48 @@ export default function Card({ task, taskId, categoryName }: CardProps) {
                 })}
               />
               <FormButton>
-                <AddButton type="submit">Edit task</AddButton>
-                <ButtonContainer onClick={() => dialogRef.current?.close}>
-                  <DismissIcon />
-                </ButtonContainer>
+                <EditButton type="submit">Edit task</EditButton>
+
+                <form method="dialog">
+                  <ButtonContainer>
+                    <DismissIcon />
+                  </ButtonContainer>
+                </form>
               </FormButton>
             </Form>
+          </ModalMain>
+        </ModalContent>
+      </ModalWrapper>
+
+      {/**
+       * Delete Dialog
+       */}
+      <ModalWrapper ref={deleteDialogRef}>
+        <ModalContent>
+          <ModalHeader>
+            <ModalMessage>정말로 삭제 하시겠습니까?</ModalMessage>
+          </ModalHeader>
+          <ModalMain
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "start",
+              gap: "0.5rem",
+            }}
+          >
+            <TaskContainer>
+              <TaskTitle>{task} </TaskTitle>
+            </TaskContainer>
+
+            <FormButton>
+              <DeleteButton type="submit">Delete task</DeleteButton>
+
+              <form method="dialog">
+                <ButtonContainer>
+                  <DismissIcon />
+                </ButtonContainer>
+              </form>
+            </FormButton>
           </ModalMain>
         </ModalContent>
       </ModalWrapper>
