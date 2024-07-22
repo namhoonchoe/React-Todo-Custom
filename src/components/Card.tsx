@@ -1,9 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import EditIcon from "./Icons/EditIcon";
 import DismissIcon from "./Icons/DismissIcon";
 import { useForm } from "react-hook-form";
 import DeleteIcon from "./Icons/DeleteIcon";
+import { useRecoilState } from "recoil";
+import { taskState } from "../atoms";
 
 const ButtonContainer = styled.button`
   outline: #fff;
@@ -102,7 +104,7 @@ const EditButton = styled.button`
 `;
 
 const DeleteButton = styled(EditButton)`
- background-color: #f74242;
+  background-color: #f74242;
   color: #fff;
   &:hover {
     background-color: #f51e1e;
@@ -171,7 +173,32 @@ export default function Card({ task, taskId, categoryName }: CardProps) {
   const editDialogRef = useRef<HTMLDialogElement | null>(null);
   const deleteDialogRef = useRef<HTMLDialogElement | null>(null);
   const containerRef = useRef<HTMLElement>(null);
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit } = useForm<SubmitType>();
+  const [taskList, setTaskList] = useRecoilState(taskState);
+
+  const deleteTodo = (id: string) => {
+    const newList = taskList.filter((task) => task.taskId !== id);
+    setTaskList(newList);
+    deleteDialogRef.current?.close();
+  };
+
+  type SubmitType = {
+    task: string;
+  };
+
+  const submitHandler = ({ task }: SubmitType) => {
+    let targetTodo = taskList.find((task) => task.taskId === taskId);
+    const targetIndex = taskList.findIndex((task) => task.taskId === taskId);
+    if (targetTodo) {
+      targetTodo = { ...targetTodo, task: task };
+      return setTaskList([
+        ...taskList.slice(0, targetIndex),
+        targetTodo,
+        ...taskList.slice(targetIndex + 1),
+      ]);
+    }
+    editDialogRef.current?.close();
+  };
 
   return (
     <>
@@ -201,15 +228,20 @@ export default function Card({ task, taskId, categoryName }: CardProps) {
             </ModalMessage>
           </ModalHeader>
           <ModalMain>
-            <Form>
+            <Form onSubmit={handleSubmit(submitHandler)}>
               <FormInput
                 placeholder={task}
-                {...register("categoryName", {
+                {...register("task", {
                   required: "Please write a board name",
                 })}
               />
               <FormButton>
-                <EditButton type="submit">Edit task</EditButton>
+                <EditButton
+                  type="submit"
+                  onClick={() => editDialogRef.current?.close()}
+                >
+                  Edit task
+                </EditButton>
 
                 <form method="dialog">
                   <ButtonContainer>
@@ -243,7 +275,9 @@ export default function Card({ task, taskId, categoryName }: CardProps) {
             </TaskContainer>
 
             <FormButton>
-              <DeleteButton type="submit">Delete task</DeleteButton>
+              <DeleteButton type="submit" onClick={() => deleteTodo(taskId)}>
+                Delete task
+              </DeleteButton>
 
               <form method="dialog">
                 <ButtonContainer>
