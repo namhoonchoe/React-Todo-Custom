@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import MoreIcon from "./Icons/MoreIcon";
 import { styled } from "styled-components";
-
+ 
 const ButtonContainer = styled.button`
   outline: #fff;
   border-radius: 20%;
@@ -25,7 +25,10 @@ const DropDown = () => {
   const toggleOpen = () => setIsOpen((prev) =>!prev);
   const { styles, attributes } = usePopper(
     referenceElement.current,
-    popperElement
+    popperElement,
+    {
+      placement:'top-start'
+    }
   );
 
   return (
@@ -48,10 +51,13 @@ const DropDown = () => {
         >
           <div
             style={{
-              padding: "10px",
-              backgroundColor: "lightgray",
+              width:"12rem",
+              marginTop: "1rem",
+              aspectRatio:1.2,
+              borderRadius: "12px",
+              backgroundColor: "black",
               color: "white",
-              borderColor: "black",
+           
             }}
           >
             Popper Content
