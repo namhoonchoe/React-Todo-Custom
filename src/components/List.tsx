@@ -3,9 +3,7 @@ import { useRecoilValue } from "recoil";
 import { taskState } from "../atoms";
 import AddCard from "./AddCard";
 import Card from "./Card";
- import DropDown from "./DropDown";
-
- 
+import DropDown from "./DropDown";
 
 const ListLayout = styled.section`
   display: flex;
@@ -32,7 +30,6 @@ const ListHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
 `;
 
 const ListTitle = styled.p`
@@ -43,11 +40,13 @@ const ListTitle = styled.p`
 
 const ListMain = styled.main`
   display: flex;
+  max-height: 50vh;
+  overflow-y: auto;
   width: 100%;
   padding: 0 0.5rem;
   flex-direction: column;
-  justify-content: center;
-  align-items: start;
+  justify-content: start;
+  align-items: center;
   gap: 1rem;
 `;
 
@@ -58,16 +57,15 @@ type ListProps = {
 
 export default function List({ categoryName, categoryId }: ListProps) {
   const tasks = useRecoilValue(taskState);
-  const filteredTasks = tasks.filter(
-    (task) => task.taskCategory.categoryId === categoryId
-  );
+  const filteredTasks = tasks
+    .filter((task) => task.taskCategory.categoryId === categoryId)
+    .reverse();
 
   return (
     <ListLayout>
       <ListHeader>
         <ListTitle>{categoryName}</ListTitle>
-        <DropDown/>
- 
+        <DropDown />
       </ListHeader>
       <ListMain>
         {filteredTasks.map((task) => (

@@ -10,3 +10,29 @@ input::-moz-placeholder { /* Mozilla Firefox 19+ */
 input:-ms-input-placeholder { /* Internet Explorer 10+ */
     color:    #fff;
 }
+
+* { 
+    scrollbar-color:  #353f4e #000;
+  }
+
+  /* Chrome, Edge, and Safari */
+  /* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+     scrollbar-color: #353f4e #000;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #353f4e;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #000;
+    border-radius: 10px;
+    border: 8px solid #353f4e;
+  }
