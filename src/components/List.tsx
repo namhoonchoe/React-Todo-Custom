@@ -3,9 +3,10 @@ import { useRecoilValue } from "recoil";
 import { taskState } from "../atoms";
 import AddCard from "./AddCard";
 import Card from "./Card";
-import DropDown from "./DropDown";
+import DropDown from "./UI/DropDown";
 import { useState } from "react";
 import DismissIcon from "./Icons/DismissIcon";
+import { ButtonContainer } from "./UI/StyledFragments";
  
 
 const ListLayout = styled.section`
@@ -60,18 +61,12 @@ const DropDownHeader = styled.header`
   align-items: center;
   width: 100%;
 `;
-
-const ButtonContainer = styled.button`
-  outline: #fff;
-  border-radius: 20%;
-  border-color: transparent;
-  background-color: transparent;
-  width: 1.5rem;
-  height: 1.5rem;
-  &:hover {
-    background-color: #3b506d;
-  }
-`;
+ 
+const AnimatedButton = styled(ButtonContainer)`
+&:hover {
+  background-color: #3b506d;
+}
+`
 
 const MenuContainer = styled.div`
   display: flex;
@@ -103,9 +98,9 @@ export default function List({ categoryName, categoryId }: ListProps) {
         <DropDown isOpen={isOpen} toggleOpen={toggleOpen}>
           <DropDownHeader>
             <ListTitle>List actions</ListTitle>
-            <ButtonContainer onClick={toggleOpen}>
+            <AnimatedButton onClick={toggleOpen}>
               <DismissIcon />
-            </ButtonContainer>
+            </AnimatedButton>
           </DropDownHeader>
           <MenuContainer>
             <ListTitle>Change list title</ListTitle>

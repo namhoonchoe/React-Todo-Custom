@@ -3,7 +3,12 @@ import AddIcon from "./Icons/AddIcon";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { categoryState } from "../atoms";
-
+import {
+  Form,
+  FormInput,
+  ButtonContainer,
+  TextButton,
+} from "./UI/StyledFragments";
 import DismissIcon from "./Icons/DismissIcon";
 import { useState } from "react";
 
@@ -18,32 +23,7 @@ const AddLayout = styled.section`
   overflow: hidden;
   width: 18rem;
   min-height: 9rem;
-  padding: 1rem 0.5rem;
-  background-color: black;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  gap: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-`;
-
-const FormInput = styled.input`
-  width: 100%;
-  height: 3.5rem;
-  background-color: #1f2937;
-  border-color: transparent;
-  border-radius: 12px;
-  padding-left: 8px;
-  color: #fff;
-  &:focus {
-    border: 2px;
-    border-color: #7ca3f8;
-    outline: none;
-  }
+   background-color: black;
 `;
 
 const AddCategory = styled.section`
@@ -64,26 +44,14 @@ const AddCategory = styled.section`
   text-transform: capitalize;
 `;
 
-const ButtonContainer = styled.button`
-  outline: #fff;
-  border-radius: 0.5rem;
-  border-color: transparent;
-  background-color: transparent;
-  width: 1.5rem;
-  height: 1.5rem;
+const AddButtonContainer = styled(ButtonContainer)`
   &:hover {
     background-color: #464646;
   }
 `;
 
-const AddButton = styled.button`
-  font-size: 12px;
-  text-transform: capitalize;
-  font-weight: 600;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
+const AddButton = styled(TextButton)`
   background-color: #579dff;
-  color: #fff;
   &:hover {
     background-color: #1e22f5;
   }
@@ -91,7 +59,7 @@ const AddButton = styled.button`
 
 const FormButton = styled(AddCategory)`
   padding-left: 0;
-`
+`;
 
 const AddMessage = styled.p`
   font-size: 12px;
@@ -139,9 +107,9 @@ export default function AddList() {
         </AddLayout>
       ) : (
         <AddCategory onClick={() => setIsAdding(!isAdding)}>
-          <ButtonContainer>
+          <AddButtonContainer>
             <AddIcon />
-          </ButtonContainer>
+          </AddButtonContainer>
           <AddMessage>add Another list</AddMessage>
         </AddCategory>
       )}

@@ -1,7 +1,7 @@
 import { usePopper } from "react-popper";
 import { useState, useRef,  ReactNode } from "react";
 import { createPortal } from "react-dom";
-import MoreIcon from "./Icons/MoreIcon";
+import MoreIcon from "../Icons/MoreIcon";
 import { styled } from "styled-components";
  
 const ButtonContainer = styled.button`
@@ -17,7 +17,7 @@ const ButtonContainer = styled.button`
 `;
  
 
-const DropDownContainer = styled.div`
+const DropDownWrapper = styled.div`
   width: 12rem;
   padding: 1rem;
   aspect-ratio: 1;
@@ -70,11 +70,11 @@ const DropDown:React.FC<DropDownProps> = ({children,isOpen,toggleOpen}) => {
           style={styles.popper}
           {...attributes.popper}
         >
-          <DropDownContainer
+          <DropDownWrapper
           
           >
             {children}
-          </DropDownContainer>
+          </DropDownWrapper>
         </div>,
         document.body
       )}

@@ -12,7 +12,7 @@ const TaskMessage = styled.p`
   font-weight: 600;
 `;
 
-const AddTask = styled.section`
+const AddContainer = styled.section`
   display: flex;
   flex-shrink: 0;
   flex-grow: 0;
@@ -139,13 +139,13 @@ export default function AddCard({ categoryName, categoryId }: AddCardProps) {
           </FormButton>
         </Form>
       ) : (
-        <AddTask onClick={() => setIsAdding(!isAdding)}>
+        <AddContainer onClick={() => setIsAdding(!isAdding)}>
           <ButtonContainer>
             <AddIcon />
           </ButtonContainer>
 
           <TaskMessage>add a card...</TaskMessage>
-        </AddTask>
+        </AddContainer>
       )}
     </>
   );
