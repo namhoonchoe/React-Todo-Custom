@@ -4,6 +4,9 @@ import { taskState } from "../atoms";
 import AddCard from "./AddCard";
 import Card from "./Card";
 import DropDown from "./DropDown";
+import { useState } from "react";
+import DismissIcon from "./Icons/DismissIcon";
+ 
 
 const ListLayout = styled.section`
   display: flex;
@@ -50,22 +53,70 @@ const ListMain = styled.main`
   gap: 1rem;
 `;
 
+const DropDownHeader = styled.header`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const ButtonContainer = styled.button`
+  outline: #fff;
+  border-radius: 20%;
+  border-color: transparent;
+  background-color: transparent;
+  width: 1.5rem;
+  height: 1.5rem;
+  &:hover {
+    background-color: #3b506d;
+  }
+`;
+
+const MenuContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 0.5rem;
+`;
+
 type ListProps = {
   categoryName: string;
   categoryId: string;
 };
 
 export default function List({ categoryName, categoryId }: ListProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const tasks = useRecoilValue(taskState);
   const filteredTasks = tasks
     .filter((task) => task.taskCategory.categoryId === categoryId)
     .reverse();
 
+  const toggleOpen = () => setIsOpen((prev) => !prev);
+
   return (
     <ListLayout>
       <ListHeader>
         <ListTitle>{categoryName}</ListTitle>
-        <DropDown />
+        <DropDown isOpen={isOpen} toggleOpen={toggleOpen}>
+          <DropDownHeader>
+            <ListTitle>List actions</ListTitle>
+            <ButtonContainer onClick={toggleOpen}>
+              <DismissIcon />
+            </ButtonContainer>
+          </DropDownHeader>
+          <MenuContainer>
+            <ListTitle>Change list title</ListTitle>
+          </MenuContainer>
+          <MenuContainer>
+            <ListTitle> Delete List</ListTitle>
+          </MenuContainer>
+          <MenuContainer>
+            <ListTitle>clear list items</ListTitle>
+          </MenuContainer>
+        </DropDown>
       </ListHeader>
       <ListMain>
         {filteredTasks.map((task) => (

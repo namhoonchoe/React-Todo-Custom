@@ -1,5 +1,5 @@
 import { usePopper } from "react-popper";
-import { useState, useRef } from "react";
+import { useState, useRef,  ReactNode } from "react";
 import { createPortal } from "react-dom";
 import MoreIcon from "./Icons/MoreIcon";
 import { styled } from "styled-components";
@@ -15,15 +15,36 @@ const ButtonContainer = styled.button`
     background-color: #3b506d;
   }
 `;
-const DropDown = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+ 
+
+const DropDownContainer = styled.div`
+  width: 12rem;
+  padding: 1rem;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background-color: black;
+  color: white; 
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 0.5rem;
+  overflow: hidden;
+`
+
+type DropDownProps = { 
+  children: ReactNode;
+  isOpen: boolean;
+  toggleOpen: () => void;
+}
+
+const DropDown:React.FC<DropDownProps> = ({children,isOpen,toggleOpen}) => {
   const referenceElement = useRef<HTMLButtonElement>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
 
-  const toggleOpen = () => setIsOpen((prev) =>!prev);
-  const { styles, attributes } = usePopper(
+   const { styles, attributes } = usePopper(
     referenceElement.current,
     popperElement,
     {
@@ -49,19 +70,11 @@ const DropDown = () => {
           style={styles.popper}
           {...attributes.popper}
         >
-          <div
-            style={{
-              width:"12rem",
-              marginTop: "1rem",
-              aspectRatio:1.2,
-              borderRadius: "12px",
-              backgroundColor: "black",
-              color: "white",
-           
-            }}
+          <DropDownContainer
+          
           >
-            Popper Content
-          </div>
+            {children}
+          </DropDownContainer>
         </div>,
         document.body
       )}

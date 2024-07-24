@@ -71,7 +71,7 @@ const BoardsLayout = styled.section`
 
 function App() {
   const categories = useRecoilValue(categoryState);
-
+  console.log(categories)
   return (
     <>
       <GlobalStyles />
