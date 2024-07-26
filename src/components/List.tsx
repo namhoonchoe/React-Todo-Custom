@@ -136,8 +136,7 @@ export default function List({ categoryName, categoryId }: ListProps) {
   const toggleOpen = () => setIsOpen((prev) => !prev);
   const editDialogRef = useRef<HTMLDialogElement | null>(null);
   const deleteDialogRef = useRef<HTMLDialogElement | null>(null);
-  const clearDialogRef = useRef<HTMLDialogElement | null>(null);
-
+ 
 
   const { register, handleSubmit } = useForm<SubmitType>();
   const [categories , setCategories] = useRecoilState(categoryState);
@@ -150,11 +149,13 @@ export default function List({ categoryName, categoryId }: ListProps) {
     const newList = categories.filter((category) => category.categoryId !== id);
     setCategories(newList);
     deleteDialogRef.current?.close();
+    toggleOpen()
   };
 
 
 
   const submitHandler = ({ categoryName }: SubmitType) => {
+    toggleOpen();
     let targetCategory = categories.find((category) => category.categoryId === categoryId);
     const targetIndex = categories.findIndex((category) => category.categoryId === categoryId);
     if (targetCategory) {
@@ -165,7 +166,7 @@ export default function List({ categoryName, categoryId }: ListProps) {
         ...categories.slice(targetIndex + 1),
       ]);
     }
-    editDialogRef.current?.close();
+    editDialogRef.current?.close(); 
   };
 
 
