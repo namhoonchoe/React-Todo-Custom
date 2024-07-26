@@ -1,4 +1,4 @@
-import { atom   } from "recoil";
+import { atom,AtomEffect } from "recoil";
  
 export type Category = {
   categoryName: string;
@@ -25,12 +25,28 @@ const initialCategory: Array<Category> = [
     categoryId: "DONE",
   },
 ];
+
  
+const localStorageEffect: <T>(key: string) => AtomEffect<T> =
+  (key: string) =>
+  ({ setSelf, onSet }) => {
+    const savedValue = localStorage.getItem(key);
+    if (savedValue !== null) {
+      setSelf(JSON.parse(savedValue));
+    }
+ 
+    onSet((newValue, _, isReset) => {
+      if (isReset) return localStorage.removeItem(key);
+
+      return localStorage.setItem(key, JSON.stringify(newValue));
+    });
+  };
 
 export const categoryState = atom<Category[]>({
   key: "category",
   default: [...initialCategory],
- });
+  effects_UNSTABLE: [localStorageEffect<Category[]>("category")],
+});
 
 export const taskState = atom<Task[]>({
   key: "task",
@@ -53,5 +69,5 @@ export const taskState = atom<Task[]>({
       taskCategory: initialCategory[2],
     },
   ],
-   
+  effects_UNSTABLE: [localStorageEffect<Task[]>("task")],
 });

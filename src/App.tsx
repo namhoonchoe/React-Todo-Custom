@@ -71,8 +71,7 @@ const BoardsLayout = styled.section`
 
 function App() {
   const categories = useRecoilValue(categoryState);
-
-  return (
+   return (
     <>
       <GlobalStyles />
       <Centered>
